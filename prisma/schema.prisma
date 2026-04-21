@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum MistakeCategory {
+  grammar
+  collocation
+  unnatural_phrasing
+  omitted_information
+  added_information
+  chinese_influenced_expression
+  weak_sentence_variety
+}
+
+enum Severity {
+  low
+  medium
+  high
+}
+
+model Passage {
+  id               String      @id @default(cuid())
+  title            String
+  sourceEnglish    String
+  referenceChinese String?
+  topic            String?
+  difficulty       Difficulty?
+  tags             String      @default("[]")
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  attempts         Attempt[]
+}
+
+model Attempt {
+  id                        String      @id @default(cuid())
+  passageId                 String
+  userChinese               String
+  userBackTranslatedEnglish String?
+  evaluationJson            String?
+  overallScore              Int?
+  meaningScore              Int?
+  naturalnessScore          Int?
+  grammarScore              Int?
+  styleScore                Int?
+  learnabilityScore         Int?
+  createdAt                 DateTime    @default(now())
+  updatedAt                 DateTime    @updatedAt
+  passage                   Passage     @relation(fields: [passageId], references: [id], onDelete: Cascade)
+  mistakes                  MistakeItem[]
+
+  @@index([passageId])
+  @@index([createdAt])
+  @@index([overallScore])
+}
+
+model MistakeItem {
+  id               String          @id @default(cuid())
+  attemptId        String
+  category         MistakeCategory
+  severity         Severity
+  originalFragment String?
+  userFragment     String?
+  explanation      String
+  suggestion       String
+  createdAt        DateTime        @default(now())
+  attempt          Attempt         @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@index([category])
+  @@index([severity])
+}
