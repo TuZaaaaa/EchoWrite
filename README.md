@@ -2,6 +2,28 @@
 
 EchoWrite is a production-style MVP for a back-translation writing trainer. It helps users practice English writing by reconstructing English from their own Chinese translation, then reviewing structured coaching feedback focused on writing quality rather than literal translation.
 
+## Screenshots
+
+### Home
+
+![EchoWrite home screen](public/screenshots/home.png)
+
+### Practice flow
+
+![EchoWrite practice screen](public/screenshots/practice.png)
+
+### Attempt feedback
+
+![EchoWrite attempt result screen](public/screenshots/attempt-result.png)
+
+### Mistake review
+
+![EchoWrite mistake review screen](public/screenshots/mistakes.png)
+
+### Passage library
+
+![EchoWrite passage management screen](public/screenshots/passages.png)
+
 ## Stack
 
 - Next.js App Router
